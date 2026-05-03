@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapin Code - Desarrollo Web Profesional</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --green: #1a7a5e;
+    --green-light: #22c55e;
+    --green-bg: #e8f5f0;
+    --gold: #f59e0b;
+    --dark: #0f172a;
+    --dark2: #1e293b;
+    --gray: #64748b;
+    --light: #f8fafc;
+    --white: #ffffff;
+    --border: #e2e8f0;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 12px 48px rgba(0,0,0,0.14);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--dark); background: var(--white); overflow-x: hidden; }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    position: fixed; top:0; width:100%; z-index:1000;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+    transition: box-shadow .3s;
+  }
+  nav.scrolled { box-shadow: var(--shadow); }
+  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .logo-icon {
+    width:40px; height:40px; background: var(--dark); border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:900; font-size:14px; font-family:'Syne',sans-serif; letter-spacing:-1px;
+  }
+  .logo-name { font-weight:800; font-size:16px; color:var(--dark); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a {
+    text-decoration:none; color:var(--gray); font-weight:500; font-size:15px;
+    transition: color .2s; position: relative;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px;
+    background:var(--green); transition: width .3s;
+  }
+  .nav-links a:hover { color:var(--green); }
+  .nav-links a:hover::after { width:100%; }
+  .btn-nav {
+    background: var(--dark); color:#fff; border:none; padding:11px 22px;
+    border-radius:10px; font-weight:700; font-size:14px; cursor:pointer;
+    display:flex; align-items:center; gap:8px; transition: all .25s; text-decoration:none;
+  }
+  .btn-nav:hover { background:var(--green); transform:translateY(-2px); box-shadow: 0 8px 20px rgba(26,122,94,.35); }
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; }
+  .hamburger span { width:24px; height:2px; background:var(--dark); border-radius:2px; transition:.3s; }
+
+  /* ===== HERO ===== */
+  #inicio {
+    min-height:100vh; padding-top:68px;
+    display:grid; grid-template-columns:1fr 1fr; align-items:center;
+    gap:40px; padding-left:7%; padding-right:5%; background: var(--light);
+    position: relative; overflow:hidden;
+  }
+  #inicio::before {
+    content:''; position:absolute; top:-100px; right:-100px;
+    width:500px; height:500px; border-radius:50%;
+    background: radial-gradient(circle, rgba(26,122,94,.08) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--green-bg); color:var(--green); border-radius:20px;
+    padding:8px 16px; font-size:13px; font-weight:600; margin-bottom:20px;
+  }
+  .hero-title { font-family:'Syne',sans-serif; font-size:clamp(36px,4.5vw,58px); line-height:1.1; font-weight:800; margin-bottom:16px; }
+  .hero-title .highlight-green { color:var(--green); }
+  .hero-title .highlight-gold { color:var(--gold); }
+  .hero-desc { color:var(--gray); font-size:16px; line-height:1.7; margin-bottom:32px; max-width:480px; }
+  .hero-btns { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px; }
+  .btn-primary {
+    background:var(--dark); color:#fff; border:none; padding:14px 26px;
+    border-radius:12px; font-weight:700; font-size:15px; cursor:pointer;
+    display:flex; align-items:center; gap:10px; transition:all .25s; text-decoration:none;
+  }
+  .btn-primary:hover { background:var(--green); transform:translateY(-3px); box-shadow:0 10px 28px rgba(26,122,94,.4); }
+  .btn-secondary {
+    background:transparent; color:var(--dark); border:2px solid var(--border);
+    padding:14px 26px; border-radius:12px; font-weight:700; font-size:15px;
+    cursor:pointer; display:flex; align-items:center; gap:10px; transition:all .25s; text-decoration:none;
+  }
+  .btn-secondary:hover { border-color:var(--green); color:var(--green); transform:translateY(-3px); }
+  .hero-tags { display:flex; gap:20px; flex-wrap:wrap; }
+  .hero-tag { display:flex; align-items:center; gap:6px; font-size:14px; color:var(--gray); font-weight:500; }
+  .hero-tag i { color:var(--green); }
+  .hero-img-wrap {
+    position:relative; display:flex; align-items:center; justify-content:center;
+  }
+  .hero-img-wrap img { width:100%; max-width:540px; border-radius:20px; }
+  .hero-img-deco {
+    position:absolute; top:20px; right:-10px; width:80px; height:80px;
+    background:var(--green-bg); border-radius:16px; z-index:-1;
+  }
+  .hero-img-deco2 {
+    position:absolute; bottom:30px; left:-10px; width:56px; height:56px;
+    background:#fef3c7; border-radius:12px; z-index:-1;
+  }
+
+  /* ===== SECTION COMMON ===== */
+  section { padding:80px 7%; }
+  .section-title { font-family:'Syne',sans-serif; font-size:clamp(28px,3.5vw,44px); font-weight:800; text-align:center; margin-bottom:12px; }
+  .section-sub { text-align:center; color:var(--gray); font-size:16px; max-width:540px; margin:0 auto 56px; line-height:1.6; }
+  .section-label { font-size:12px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--green); margin-bottom:10px; }
+
+  /* ===== WHY SECTION ===== */
+  #por-que { background:var(--light); }
+  .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .feature-card {
+    background:var(--white); border-radius:20px; padding:32px 28px;
+    border:1px solid var(--border); transition:all .3s; cursor:default;
+  }
+  .feature-card:hover { transform:translateY(-8px); box-shadow:var(--shadow-lg); border-color:var(--green); }
+  .feature-card.featured { background:var(--white); box-shadow:var(--shadow-lg); border-color:var(--green); transform:scale(1.02); }
+  .feature-icon {
+    width:56px; height:56px; border-radius:14px; background:var(--green);
+    display:flex; align-items:center; justify-content:center; margin-bottom:20px;
+    transition: transform .3s;
+  }
+  .feature-card:hover .feature-icon { transform:rotate(-6deg) scale(1.1); }
+  .feature-icon i { color:#fff; font-size:22px; }
+  .feature-card h3 { font-weight:800; font-size:18px; margin-bottom:10px; }
+  .feature-card p { color:var(--gray); font-size:14px; line-height:1.65; }
+
+  /* ===== SERVICES ===== */
+  #servicios { background:var(--white); }
+  .services-header { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; margin-bottom:48px; }
+  .services-header .section-title { text-align:left; }
+  .services-header p { color:var(--gray); font-size:16px; line-height:1.7; margin-top:12px; }
+  .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .service-card {
+    background:var(--light); border-radius:20px; padding:32px 24px;
+    border:1px solid var(--border); transition:all .3s; cursor:default;
+  }
+  .service-card:hover { transform:translateY(-8px); box-shadow:var(--shadow-lg); background:var(--white); border-color:var(--green); }
+  .service-icon {
+    width:52px; height:52px; border-radius:12px; background:var(--green-bg);
+    display:flex; align-items:center; justify-content:center; margin-bottom:20px;
+    transition: all .3s;
+  }
+  .service-card:hover .service-icon { background:var(--green); }
+  .service-icon i { color:var(--green); font-size:20px; transition: color .3s; }
+  .service-card:hover .service-icon i { color:#fff; }
+  .service-card h3 { font-weight:800; font-size:17px; margin-bottom:10px; }
+  .service-card p { color:var(--gray); font-size:14px; line-height:1.6; margin-bottom:16px; }
+  .service-features { list-style:none; margin-bottom:20px; }
+  .service-features li { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--dark); margin-bottom:6px; font-weight:500; }
+  .service-features li i { color:var(--green); font-size:11px; }
+  .mas-info { color:var(--green); font-weight:700; font-size:14px; text-decoration:none; display:flex; align-items:center; gap:6px; transition:gap .2s; }
+  .mas-info:hover { gap:12px; }
+
+  /* ===== BENEFITS ===== */
+  #beneficios { background:var(--dark); color:#fff; }
+  .benefits-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+  .benefits-img { position:relative; border-radius:20px; overflow:hidden; }
+  .benefits-img img { width:100%; border-radius:20px; display:block; }
+  .clients-badge {
+    position:absolute; bottom:24px; right:24px;
+    background:#fff; color:var(--dark); border-radius:14px;
+    padding:14px 20px; display:flex; align-items:center; gap:12px;
+    box-shadow:var(--shadow-lg);
+  }
+  .clients-badge .num { font-size:22px; font-weight:900; }
+  .clients-badge .label { font-size:12px; color:var(--gray); }
+  .benefits-label { font-size:12px; font-weight:800; letter-spacing:2px; color:var(--green-light); text-transform:uppercase; margin-bottom:12px; }
+  .benefits-title { font-family:'Syne',sans-serif; font-size:clamp(28px,3vw,42px); font-weight:800; margin-bottom:16px; }
+  .benefits-desc { color:#94a3b8; font-size:15px; line-height:1.7; margin-bottom:32px; }
+  .benefit-item { display:flex; align-items:flex-start; gap:16px; margin-bottom:24px; }
+  .benefit-ico {
+    width:44px; height:44px; min-width:44px; border-radius:12px;
+    background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center;
+    transition:background .3s;
+  }
+  .benefit-item:hover .benefit-ico { background:var(--green); }
+  .benefit-ico i { color:var(--green-light); font-size:18px; }
+  .benefit-item:hover .benefit-ico i { color:#fff; }
+  .benefit-item h4 { font-weight:700; font-size:15px; margin-bottom:4px; }
+  .benefit-item p { color:#94a3b8; font-size:14px; line-height:1.6; }
+
+  /* ===== PRICING ===== */
+  #paquetes { background:var(--light); }
+  .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .price-card {
+    background:var(--white); border-radius:24px; padding:36px 28px;
+    border:2px solid var(--border); transition:all .3s; position:relative; overflow:hidden;
+  }
+  .price-card:hover { transform:translateY(-8px); box-shadow:var(--shadow-lg); }
+  .price-card.popular {
+    border-color:var(--green); box-shadow:var(--shadow-lg);
+    transform:scale(1.03);
+  }
+  .price-card.popular:hover { transform:scale(1.03) translateY(-6px); }
+  .popular-badge {
+    position:absolute; top:20px; left:50%; transform:translateX(-50%);
+    background:var(--gold); color:var(--dark); font-size:11px; font-weight:800;
+    padding:5px 16px; border-radius:20px; letter-spacing:1px; text-transform:uppercase;
+  }
+  .price-label { font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--green); margin-bottom:8px; margin-top:8px; }
+  .price-name { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; margin-bottom:8px; }
+  .price-desc { font-size:13px; color:var(--gray); margin-bottom:20px; line-height:1.6; }
+  .price-amount { font-family:'Syne',sans-serif; font-size:38px; font-weight:900; margin-bottom:24px; }
+  .price-amount span { font-size:16px; font-weight:500; color:var(--gray); }
+  .price-features { list-style:none; margin-bottom:28px; }
+  .price-features li { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--dark); margin-bottom:10px; font-weight:500; }
+  .price-features li i { color:var(--green); font-size:12px; }
+  .btn-price {
+    width:100%; padding:14px; border-radius:12px; font-weight:700; font-size:15px;
+    cursor:pointer; transition:all .25s; border:2px solid var(--dark); background:transparent;
+    color:var(--dark); text-align:center; text-decoration:none; display:block;
+  }
+  .btn-price:hover, .btn-price.filled { background:var(--dark); color:#fff; }
+  .btn-price.filled { border-color:var(--dark); }
+  .btn-price.filled:hover { background:var(--green); border-color:var(--green); box-shadow:0 8px 24px rgba(26,122,94,.35); }
+
+  /* ===== PROCESS ===== */
+  #proceso { background:var(--white); }
+  .process-steps { display:flex; justify-content:center; align-items:flex-start; gap:0; position:relative; }
+  .process-line {
+    position:absolute; top:40px; left:10%; right:10%; height:2px;
+    background: linear-gradient(90deg,var(--green),var(--green-light));
+    z-index:0;
+  }
+  .step { display:flex; flex-direction:column; align-items:center; text-align:center; flex:1; position:relative; z-index:1; padding:0 10px; }
+  .step-num {
+    width:80px; height:80px; border-radius:50%; background:var(--white);
+    border:2px solid var(--border); display:flex; align-items:center; justify-content:center;
+    font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:var(--green);
+    margin-bottom:20px; transition:all .3s; box-shadow:var(--shadow);
+  }
+  .step:hover .step-num { background:var(--green); color:#fff; border-color:var(--green); transform:scale(1.1); }
+  .step-ico { width:36px; height:36px; background:var(--green-bg); border-radius:8px; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; }
+  .step-ico i { color:var(--green); font-size:14px; }
+  .step h4 { font-weight:800; font-size:14px; margin-bottom:8px; }
+  .step p { color:var(--gray); font-size:13px; line-height:1.6; }
+
+  /* ===== PORTFOLIO ===== */
+  #portafolio { background:var(--light); }
+  .portfolio-filters { display:flex; justify-content:center; gap:8px; margin-bottom:40px; flex-wrap:wrap; }
+  .filter-btn {
+    padding:9px 20px; border-radius:20px; border:1px solid var(--border);
+    background:var(--white); color:var(--gray); font-weight:600; font-size:13px;
+    cursor:pointer; transition:all .2s;
+  }
+  .filter-btn.active, .filter-btn:hover { background:var(--dark); color:#fff; border-color:var(--dark); }
+  .portfolio-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; max-width:900px; margin:0 auto; }
+  .portfolio-item {
+    border-radius:20px; overflow:hidden; position:relative; cursor:pointer;
+    box-shadow:var(--shadow); transition:all .3s; background:var(--white);
+  }
+  .portfolio-item:hover { transform:translateY(-6px); box-shadow:var(--shadow-lg); }
+  .portfolio-item:first-child { grid-column:1/-1; }
+  .portfolio-img { width:100%; height:260px; background:linear-gradient(135deg,var(--dark2),var(--dark)); display:block; position:relative; overflow:hidden; }
+  .portfolio-item:first-child .portfolio-img { height:380px; }
+  .portfolio-img-placeholder { width:90%; height:85%; background:rgba(255,255,255,.05); border-radius:12px; border:1px solid rgba(255,255,255,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; }
+  .portfolio-img-placeholder i { font-size:32px; color:var(--green-light); }
+  .portfolio-img-placeholder span { color:#94a3b8; font-size:13px; }
+  .portfolio-img img {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    display:block;
+    transition:transform .4s ease;
+  }
+  .portfolio-item:hover .portfolio-img img { transform:scale(1.06); }
+  .portfolio-overlay { z-index:2; }
+  .portfolio-overlay {
+    position:absolute; inset:0; background:rgba(26,122,94,.9);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; transition:.3s;
+  }
+  .portfolio-item:hover .portfolio-overlay { opacity:1; }
+  .portfolio-overlay i { color:#fff; font-size:28px; }
+  .portfolio-info { padding:16px 20px; }
+  .portfolio-info h4 { font-weight:800; font-size:16px; margin-bottom:4px; }
+  .portfolio-info p { color:var(--gray); font-size:13px; }
+  .portfolio-tag { display:inline-block; background:var(--green-bg); color:var(--green); font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; float:right; margin-top:2px; }
+
+  /* ===== CONTACT ===== */
+  #contacto { background:var(--white); }
+  .contact-wrap {
+    max-width:920px; margin:0 auto;
+    display:grid; grid-template-columns:1fr 1.3fr;
+    border-radius:24px; overflow:hidden; box-shadow:var(--shadow-lg);
+  }
+  .contact-left { background:var(--dark); padding:48px 36px; color:#fff; }
+  .contact-left h2 { font-family:'Syne',sans-serif; font-size:28px; font-weight:800; margin-bottom:12px; }
+  .contact-left p { color:#94a3b8; font-size:15px; line-height:1.6; margin-bottom:32px; }
+  .contact-info { display:flex; flex-direction:column; gap:14px; margin-bottom:28px; }
+  .contact-info-item { display:flex; align-items:center; gap:12px; font-size:14px; font-weight:500; }
+  .contact-info-item i { width:36px; height:36px; background:rgba(255,255,255,.08); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--green-light); font-size:14px; }
+  .btn-whatsapp {
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    background:#25D366; color:#fff; border:none; padding:14px 24px;
+    border-radius:12px; font-weight:700; font-size:15px; cursor:pointer;
+    width:100%; transition:all .25s; text-decoration:none;
+  }
+  .btn-whatsapp:hover { background:#1db954; transform:translateY(-2px); box-shadow:0 8px 24px rgba(37,211,102,.4); }
+  .contact-right { background:var(--white); padding:48px 36px; }
+  .form-group { margin-bottom:18px; }
+  .form-group label { display:block; font-size:13px; font-weight:700; margin-bottom:6px; color:var(--dark); }
+  .form-group input, .form-group select, .form-group textarea {
+    width:100%; padding:12px 16px; border:1.5px solid var(--border); border-radius:10px;
+    font-family:inherit; font-size:14px; color:var(--dark); background:var(--light);
+    transition:border .2s; outline:none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color:var(--green); background:var(--white);
+  }
+  .form-group textarea { height:120px; resize:vertical; }
+  .char-count { font-size:11px; color:var(--gray); text-align:right; margin-top:4px; }
+  .btn-submit {
+    width:100%; padding:15px; background:var(--dark); color:#fff; border:none;
+    border-radius:12px; font-weight:700; font-size:15px; cursor:pointer; transition:all .25s;
+  }
+  .btn-submit:hover { background:var(--green); box-shadow:0 8px 24px rgba(26,122,94,.4); transform:translateY(-2px); }
+
+  /* ===== FOOTER ===== */
+  footer { background:var(--dark); color:#fff; padding:56px 7% 28px; }
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:48px; margin-bottom:48px; }
+  .footer-brand .logo { margin-bottom:14px; display:inline-flex; }
+  .footer-brand .logo-icon { background:rgba(255,255,255,.1); }
+  .footer-brand .logo-name { color:#fff; }
+  .footer-brand p { color:#94a3b8; font-size:14px; line-height:1.7; max-width:280px; margin-bottom:20px; }
+  .social-links { display:flex; gap:10px; }
+  .social-link {
+    width:36px; height:36px; border-radius:8px; background:rgba(255,255,255,.08);
+    display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:14px;
+    text-decoration:none; transition:all .2s;
+  }
+  .social-link:hover { background:var(--green); color:#fff; }
+  .footer-col h4 { font-weight:800; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:#64748b; margin-bottom:16px; }
+  .footer-col ul { list-style:none; }
+  .footer-col ul li { margin-bottom:10px; }
+  .footer-col ul li a { color:#94a3b8; text-decoration:none; font-size:14px; transition:color .2s; }
+  .footer-col ul li a:hover { color:var(--green-light); }
+  .footer-col ul li span { color:#94a3b8; font-size:14px; display:flex; align-items:center; gap:8px; }
+  .footer-col ul li span i { color:var(--green-light); }
+  .footer-bottom { border-top:1px solid rgba(255,255,255,.08); padding-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  .footer-bottom p { color:#64748b; font-size:13px; }
+  .footer-bottom-links { display:flex; gap:20px; }
+  .footer-bottom-links a { color:#64748b; font-size:13px; text-decoration:none; transition:color .2s; }
+  .footer-bottom-links a:hover { color:var(--green-light); }
+
+  /* ===== WHATSAPP FLOAT ===== */
+  .wa-float {
+    position:fixed; bottom:28px; right:28px; z-index:999;
+    width:56px; height:56px; border-radius:50%; background:#25D366;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 20px rgba(37,211,102,.5); cursor:pointer;
+    transition:all .3s; text-decoration:none;
+    animation: pulse 2s infinite;
+  }
+  .wa-float:hover { transform:scale(1.12); box-shadow:0 8px 32px rgba(37,211,102,.6); }
+  .wa-float i { color:#fff; font-size:26px; }
+  @keyframes pulse { 0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.5)} 50%{box-shadow:0 4px 32px rgba(37,211,102,.8)} }
+
+  /* ===== MOBILE NAV ===== */
+  .mobile-menu {
+    display:none; position:fixed; top:68px; left:0; right:0; bottom:0;
+    background:var(--white); z-index:999; flex-direction:column;
+    padding:32px 7%; gap:8px; overflow-y:auto;
+  }
+  .mobile-menu.open { display:flex; }
+  .mobile-menu a {
+    padding:14px 0; border-bottom:1px solid var(--border);
+    text-decoration:none; color:var(--dark); font-weight:600; font-size:16px;
+  }
+  .mobile-menu .btn-nav { margin-top:20px; justify-content:center; }
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:900px) {
+    #inicio { grid-template-columns:1fr; text-align:center; padding:100px 7% 60px; }
+    .hero-img-wrap { order:-1; }
+    .hero-btns, .hero-tags { justify-content:center; }
+    .features-grid, .services-grid, .pricing-grid { grid-template-columns:1fr 1fr; }
+    .benefits-grid { grid-template-columns:1fr; }
+    .services-header { grid-template-columns:1fr; }
+    .services-header .section-title { text-align:center; }
+    .footer-grid { grid-template-columns:1fr 1fr; }
+    .nav-links, .btn-nav { display:none; }
+    .hamburger { display:flex; }
+  }
+  @media(max-width:600px) {
+    section { padding:60px 5%; }
+    .features-grid, .services-grid, .pricing-grid { grid-template-columns:1fr; }
+    .price-card.popular { transform:none; }
+    .process-steps { flex-direction:column; align-items:center; gap:24px; }
+    .process-line { display:none; }
+    .portfolio-grid { grid-template-columns:1fr; }
+    .portfolio-item:first-child { grid-column:auto; }
+    .contact-wrap { grid-template-columns:1fr; }
+    .footer-grid { grid-template-columns:1fr; }
+    #inicio { padding:90px 5% 50px; }
+  }
+
+  /* ===== ANIMATIONS ===== */
+  .fade-in { opacity:0; transform:translateY(30px); transition:all .6s ease; }
+  .fade-in.visible { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#inicio" class="logo">
+    <div class="logo-icon">CC</div>
+    <span class="logo-name">Chapin Code</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#paquetes">Paquetes</a></li>
+    <li><a href="#portafolio">Portafolio</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="https://wa.me/50236726014?text=Hola,%20quiero%20solicitar%20una%20cotizacion" target="_blank" class="btn-nav">
+    <i class="fab fa-whatsapp"></i> Solicitar Cotizacion
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#inicio" onclick="closeMobile()">Inicio</a>
+  <a href="#servicios" onclick="closeMobile()">Servicios</a>
+  <a href="#paquetes" onclick="closeMobile()">Paquetes</a>
+  <a href="#portafolio" onclick="closeMobile()">Portafolio</a>
+  <a href="#contacto" onclick="closeMobile()">Contacto</a>
+  <a href="https://wa.me/50236726014" target="_blank" class="btn-nav"><i class="fab fa-whatsapp"></i> Solicitar Cotizacion</a>
+</div>
+
+<!-- HERO -->
+<section id="inicio">
+  <div class="hero-content fade-in">
+    <div class="hero-badge"><i class="fas fa-shield-alt"></i> Desarrollo Web Profesional</div>
+    <h1 class="hero-title">
+      Creo paginas web<br>modernas para que tu<br>negocio
+      <span class="highlight-green">venda</span> <span class="highlight-gold">mas</span>
+    </h1>
+    <p class="hero-desc">Diseno sitios web profesionales, rapidos y adaptados a celular para negocios, emprendimientos y marcas personales que quieren destacar en internet.</p>
+    <div class="hero-btns">
+      <a href="https://wa.me/50236726014?text=Hola,%20quiero%20contactarlos" target="_blank" class="btn-primary">
+        <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+      </a>
+      <a href="#servicios" class="btn-secondary">Ver Servicios <i class="fas fa-arrow-down"></i></a>
+    </div>
+    <div class="hero-tags">
+      <span class="hero-tag"><i class="fas fa-check"></i> Entrega en 7-15 dias</span>
+      <span class="hero-tag"><i class="fas fa-check"></i> Diseno responsive</span>
+      <span class="hero-tag"><i class="fas fa-check"></i> Soporte incluido</span>
+    </div>
+  </div>
+  <div class="hero-img-wrap fade-in">
+    <div class="hero-img-deco"></div>
+    <div class="hero-img-deco2"></div>
+    <svg viewBox="0 0 540 440" xmlns="http://www.w3.org/2000/svg" style="max-width:540px;width:100%">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f0fdf4"/>
+          <stop offset="100%" stop-color="#dcfce7"/>
+        </linearGradient>
+      </defs>
+      <rect width="540" height="440" rx="24" fill="url(#bg)"/>
+      <!-- Desk surface -->
+      <ellipse cx="270" cy="380" rx="200" ry="30" fill="#e2e8f0"/>
+      <!-- Monitor stand -->
+      <rect x="248" y="320" width="44" height="40" rx="6" fill="#cbd5e1"/>
+      <rect x="218" y="356" width="104" height="12" rx="6" fill="#94a3b8"/>
+      <!-- Monitor -->
+      <rect x="90" y="100" width="360" height="230" rx="18" fill="#f8fafc" stroke="#e2e8f0" stroke-width="3"/>
+      <rect x="102" y="112" width="336" height="206" rx="10" fill="#1a7a5e"/>
+      <!-- Screen content -->
+      <rect x="120" y="128" width="140" height="12" rx="4" fill="rgba(255,255,255,.3)"/>
+      <rect x="120" y="148" width="100" height="8" rx="4" fill="rgba(255,255,255,.2)"/>
+      <rect x="120" y="164" width="120" height="8" rx="4" fill="rgba(255,255,255,.2)"/>
+      <rect x="280" y="128" width="80" height="60" rx="8" fill="rgba(255,255,255,.12)"/>
+      <rect x="120" y="200" width="240" height="6" rx="3" fill="rgba(255,255,255,.15)"/>
+      <rect x="120" y="214" width="200" height="6" rx="3" fill="rgba(255,255,255,.15)"/>
+      <rect x="120" y="228" width="220" height="6" rx="3" fill="rgba(255,255,255,.15)"/>
+      <rect x="120" y="260" width="80" height="28" rx="8" fill="#f59e0b"/>
+      <rect x="216" y="260" width="80" height="28" rx="8" fill="rgba(255,255,255,.15)"/>
+      <!-- Keyboard -->
+      <rect x="148" y="366" width="180" height="18" rx="5" fill="#cbd5e1"/>
+      <rect x="342" y="366" width="36" height="18" rx="9" fill="#cbd5e1"/>
+      <!-- Plant -->
+      <rect x="56" y="356" width="22" height="24" rx="4" fill="#e2e8f0"/>
+      <ellipse cx="67" cy="344" rx="18" ry="22" fill="#1a7a5e"/>
+      <ellipse cx="67" cy="330" rx="10" ry="12" fill="#22c55e"/>
+      <!-- Deco shapes -->
+      <rect x="430" y="80" width="60" height="60" rx="12" fill="#fef3c7"/>
+      <circle cx="80" cy="160" r="20" fill="#dcfce7"/>
+    </svg>
+  </div>
+</section>
+
+<!-- POR QUE ELEGIR -->
+<section id="por-que">
+  <h2 class="section-title fade-in">Por que elegir Chapin Code</h2>
+  <p class="section-sub fade-in">Beneficios que hacen la diferencia entre una pagina comun y una pagina que convierte.</p>
+  <div class="features-grid">
+    <div class="feature-card fade-in">
+      <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+      <h3>100% Responsive</h3>
+      <p>Tu pagina se ve perfecta en celular, tablet y computadora. Todos los dispositivos, siempre.</p>
+    </div>
+    <div class="feature-card featured fade-in">
+      <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+      <h3>Carga Ultrarrapida</h3>
+      <p>Paginas optimizadas para que carguen en segundos. Tus clientes no esperan, tu sitio tampoco.</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon"><i class="fab fa-whatsapp"></i></div>
+      <h3>WhatsApp Integrado</h3>
+      <p>Boton de WhatsApp flotante para que tus clientes te contacten al instante sin complicaciones.</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon"><i class="fas fa-paint-brush"></i></div>
+      <h3>Diseno Moderno</h3>
+      <p>Estetica profesional, actual y limpia que transmite confianza y destaca tu marca.</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+      <h3>Seguro y Confiable</h3>
+      <p>Certificado SSL incluido para proteger los datos de tus visitantes y generar confianza.</p>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feature-icon"><i class="fas fa-stopwatch"></i></div>
+      <h3>Entrega Rapida</h3>
+      <p>Tu sitio web listo en tiempo record. Desde 7 dias para proyectos basicos hasta 2 semanas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="services-header">
+    <div>
+      <div class="section-label">NUESTROS SERVICIOS</div>
+      <h2 class="section-title" style="text-align:left">Soluciones web para cada necesidad</h2>
+    </div>
+    <div>
+      <p style="color:var(--gray);font-size:16px;line-height:1.7;margin-top:20px">Desde una pagina sencilla hasta un sitio completo. Tengo la solucion perfecta para tu negocio.</p>
+    </div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card fade-in">
+      <div class="service-icon"><i class="fas fa-globe"></i></div>
+      <h3>Pagina Web Basica</h3>
+      <p>Pagina de una sola seccion ideal para emprendedores y negocios que estan iniciando.</p>
+      <ul class="service-features">
+        <li><i class="fas fa-check"></i>1 pagina principal</li>
+        <li><i class="fas fa-check"></i>Diseno responsive</li>
+        <li><i class="fas fa-check"></i>Boton WhatsApp</li>
+        <li><i class="fas fa-check"></i>Formulario de contacto</li>
+      </ul>
+      <a href="#contacto" class="mas-info">Mas informacion <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="service-card fade-in">
+      <div class="service-icon"><i class="fas fa-rocket"></i></div>
+      <h3>Landing Page de Ventas</h3>
+      <p>Pagina enfocada en convertir visitantes en clientes. Disenada para vender con flujo claro.</p>
+      <ul class="service-features">
+        <li><i class="fas fa-check"></i>Diseno persuasivo</li>
+        <li><i class="fas fa-check"></i>CTAs estrategicos</li>
+        <li><i class="fas fa-check"></i>Formulario de leads</li>
+        <li><i class="fas fa-check"></i>Optimizada para conversion</li>
+      </ul>
+      <a href="#contacto" class="mas-info">Mas informacion <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="service-card fade-in">
+      <div class="service-icon"><i class="fas fa-building"></i></div>
+      <h3>Sitio Web Empresarial</h3>
+      <p>Sitio completo con multiples secciones para negocios establecidos.</p>
+      <ul class="service-features">
+        <li><i class="fas fa-check"></i>Hasta 5 paginas</li>
+        <li><i class="fas fa-check"></i>Galeria de imagenes</li>
+        <li><i class="fas fa-check"></i>Testimonios</li>
+        <li><i class="fas fa-check"></i>Mapa de ubicacion</li>
+      </ul>
+      <a href="#contacto" class="mas-info">Mas informacion <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="service-card fade-in">
+      <div class="service-icon"><i class="fas fa-sync-alt"></i></div>
+      <h3>Rediseno Web</h3>
+      <p>Transforma tu pagina actual en un sitio moderno, rapido y profesional.</p>
+      <ul class="service-features">
+        <li><i class="fas fa-check"></i>Nueva estetica</li>
+        <li><i class="fas fa-check"></i>Mejor velocidad</li>
+        <li><i class="fas fa-check"></i>Responsive</li>
+        <li><i class="fas fa-check"></i>SEO basico</li>
+      </ul>
+      <a href="#contacto" class="mas-info">Mas informacion <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="service-card fade-in">
+      <div class="service-icon"><i class="fas fa-tools"></i></div>
+      <h3>Mantenimiento Web</h3>
+      <p>Mantengo tu pagina actualizada, segura y funcionando correctamente.</p>
+      <ul class="service-features">
+        <li><i class="fas fa-check"></i>Actualizaciones</li>
+        <li><i class="fas fa-check"></i>Copias de seguridad</li>
+        <li><i class="fas fa-check"></i>Soporte tecnico</li>
+        <li><i class="fas fa-check"></i>Correcciones</li>
+      </ul>
+      <a href="#contacto" class="mas-info">Mas informacion <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="service-card fade-in">
+      <div class="service-icon"><i class="fas fa-chart-bar"></i></div>
+      <h3>Consultoria Digital</h3>
+      <p>Te asesoro para tener la mejor presencia en internet y mejorar tu visibilidad online.</p>
+      <ul class="service-features">
+        <li><i class="fas fa-check"></i>Analisis de necesidades</li>
+        <li><i class="fas fa-check"></i>Estrategia digital</li>
+        <li><i class="fas fa-check"></i>Recomendaciones</li>
+        <li><i class="fas fa-check"></i>Plan de accion</li>
+      </ul>
+      <a href="#contacto" class="mas-info">Mas informacion <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section id="beneficios">
+  <div class="benefits-grid">
+    <div class="benefits-img fade-in">
+      <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:20px">
+        <rect width="480" height="380" rx="20" fill="#1e293b"/>
+        <rect x="20" y="20" width="260" height="340" rx="16" fill="#0f172a"/>
+        <rect x="32" y="32" width="236" height="316" rx="10" fill="#1e293b"/>
+        <!-- Person silhouette area -->
+        <circle cx="150" cy="120" r="40" fill="#334155"/>
+        <rect x="90" y="170" width="120" height="80" rx="16" fill="#334155"/>
+        <!-- Laptop on desk -->
+        <rect x="50" y="270" width="200" height="12" rx="4" fill="#475569"/>
+        <rect x="70" y="220" width="160" height="50" rx="8" fill="#1a7a5e" opacity=".7"/>
+        <rect x="80" y="228" width="140" height="6" rx="3" fill="rgba(255,255,255,.4)"/>
+        <rect x="80" y="240" width="100" height="6" rx="3" fill="rgba(255,255,255,.2)"/>
+        <!-- Right panel stats -->
+        <rect x="300" y="40" width="160" height="80" rx="12" fill="#0f172a"/>
+        <rect x="316" y="56" width="60" height="6" rx="3" fill="#475569"/>
+        <rect x="316" y="70" width="40" height="16" rx="4" fill="#22c55e"/>
+        <rect x="300" y="136" width="160" height="60" rx="12" fill="#0f172a"/>
+        <rect x="316" y="148" width="80" height="6" rx="3" fill="#475569"/>
+        <rect x="316" y="164" width="50" height="12" rx="4" fill="#f59e0b"/>
+        <rect x="300" y="212" width="160" height="60" rx="12" fill="#0f172a"/>
+        <rect x="316" y="224" width="70" height="6" rx="3" fill="#475569"/>
+        <rect x="316" y="240" width="60" height="12" rx="4" fill="#1a7a5e"/>
+        <rect x="300" y="288" width="160" height="72" rx="12" fill="#0f172a"/>
+        <rect x="310" y="300" width="40" height="40" rx="8" fill="#1e293b"/>
+        <rect x="314" y="304" width="32" height="32" rx="6" fill="#22c55e" opacity=".3"/>
+        <text x="322" y="325" font-size="14" fill="#22c55e" font-family="monospace">50+</text>
+        <rect x="360" y="304" width="90" height="8" rx="4" fill="#334155"/>
+        <rect x="360" y="320" width="60" height="6" rx="3" fill="#1e3a2f"/>
+      </svg>
+      <div class="clients-badge">
+        <div>
+          <div class="num">50+</div>
+          <div class="label">Clientes satisfechos</div>
+        </div>
+        <i class="fas fa-chart-line" style="color:var(--green);font-size:22px"></i>
+      </div>
+    </div>
+    <div class="fade-in">
+      <div class="benefits-label">BENEFICIOS CLAVE</div>
+      <h2 class="benefits-title">Tu negocio merece estar en internet</h2>
+      <p class="benefits-desc">En la era digital, no tener pagina web es como no existir. Cada dia que pasa sin presencia online, estas perdiendo clientes potenciales.</p>
+      <div class="benefit-item">
+        <div class="benefit-ico"><i class="fas fa-user-clock"></i></div>
+        <div>
+          <h4>Mas clientes te encuentran 24/7</h4>
+          <p>Tu pagina web trabaja por ti todo el dia. Los clientes pueden encontrarte en Google en cualquier momento.</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-ico"><i class="fas fa-shield-alt"></i></div>
+        <div>
+          <h4>Genera confianza profesional</h4>
+          <p>Un sitio web bien disenado demuestra que tu negocio es serio y confiable. La primera impresion cuenta.</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-ico"><i class="fas fa-chart-line"></i></div>
+        <div>
+          <h4>Aumenta tus ventas online</h4>
+          <p>Muestra tus productos o servicios de forma atractiva y convierte visitantes en compradores.</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-ico"><i class="fab fa-whatsapp"></i></div>
+        <div>
+          <h4>Contacto directo por WhatsApp</h4>
+          <p>Los clientes pueden contactarte directamente con un solo clic, sin complicaciones ni formularios largos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAQUETES -->
+<section id="paquetes">
+  <h2 class="section-title fade-in">Elige tu paquete ideal</h2>
+  <p class="section-sub fade-in">Cada negocio es diferente. Escoge el plan que mejor se ajuste a tus necesidades.</p>
+  <div class="pricing-grid">
+    <div class="price-card fade-in">
+      <div class="price-label">EMPRENDEDORES</div>
+      <div class="price-name">Paquete Basico</div>
+      <p class="price-desc">Ideal para quienes estan iniciando y necesitan una presencia rapida en internet.</p>
+      <div class="price-amount">Q1,500 <span>desde</span></div>
+      <ul class="price-features">
+        <li><i class="fas fa-check"></i>Pagina de una seccion</li>
+        <li><i class="fas fa-check"></i>Diseno responsive</li>
+        <li><i class="fas fa-check"></i>Boton de WhatsApp</li>
+        <li><i class="fas fa-check"></i>Formulario de contacto</li>
+        <li><i class="fas fa-check"></i>Enlace a redes sociales</li>
+        <li><i class="fas fa-check"></i>Entrega en 7 dias</li>
+        <li><i class="fas fa-check"></i>1 revision incluida</li>
+      </ul>
+      <a href="https://wa.me/50236726014?text=Hola,%20me%20interesa%20el%20Paquete%20Basico" target="_blank" class="btn-price">Consultar</a>
+    </div>
+    <div class="price-card popular fade-in">
+      <div class="popular-badge">POPULAR</div>
+      <div class="price-label" style="margin-top:36px">POPULAR</div>
+      <div class="price-name">Paquete Profesional</div>
+      <p class="price-desc">Para negocios que quieren verse formales y mostrar todos sus servicios.</p>
+      <div class="price-amount">Q3,500 <span>desde</span></div>
+      <ul class="price-features">
+        <li><i class="fas fa-check"></i>Hasta 5 secciones</li>
+        <li><i class="fas fa-check"></i>Diseno personalizado</li>
+        <li><i class="fas fa-check"></i>Galeria de imagenes</li>
+        <li><i class="fas fa-check"></i>Mapa de ubicacion</li>
+        <li><i class="fas fa-check"></i>WhatsApp + Formulario</li>
+        <li><i class="fas fa-check"></i>Redes sociales integradas</li>
+        <li><i class="fas fa-check"></i>Entrega en 10-12 dias</li>
+        <li><i class="fas fa-check"></i>2 revisiones incluidas</li>
+        <li><i class="fas fa-check"></i>SEO basico</li>
+      </ul>
+      <a href="https://wa.me/50236726014?text=Hola,%20me%20interesa%20el%20Paquete%20Profesional" target="_blank" class="btn-price filled">Consultar</a>
+    </div>
+    <div class="price-card fade-in">
+      <div class="price-label">NEGOCIOS EN CRECIMIENTO</div>
+      <div class="price-name">Paquete Premium</div>
+      <p class="price-desc">Pagina completa con multiples funciones para empresas que buscan destacar.</p>
+      <div class="price-amount">Q6,000 <span>desde</span></div>
+      <ul class="price-features">
+        <li><i class="fas fa-check"></i>Diseno avanzado unico</li>
+        <li><i class="fas fa-check"></i>Hasta 8 paginas internas</li>
+        <li><i class="fas fa-check"></i>Optimizacion de velocidad</li>
+        <li><i class="fas fa-check"></i>Integracion con redes sociales</li>
+        <li><i class="fas fa-check"></i>Galeria y testimonios</li>
+        <li><i class="fas fa-check"></i>WhatsApp + Formulario avanzado</li>
+        <li><i class="fas fa-check"></i>Entrega en 15 dias</li>
+        <li><i class="fas fa-check"></i>3 revisiones incluidas</li>
+        <li><i class="fas fa-check"></i>SEO basico</li>
+        <li><i class="fas fa-check"></i>Soporte inicial 30 dias</li>
+      </ul>
+      <a href="https://wa.me/50236726014?text=Hola,%20me%20interesa%20el%20Paquete%20Premium" target="_blank" class="btn-price filled">Consultar</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <h2 class="section-title fade-in">Como trabajamos juntos</h2>
+  <p class="section-sub fade-in">Un proceso sencillo y transparente para que tengas tu pagina web sin complicaciones.</p>
+  <div class="process-steps">
+    <div class="process-line"></div>
+    <div class="step fade-in">
+      <div class="step-num">01</div>
+      <div class="step-ico"><i class="fas fa-comments"></i></div>
+      <h4>Me cuentas que necesitas</h4>
+      <p>Hablamos sobre tu negocio, tus objetivos y el tipo de pagina que necesitas. Sin compromiso.</p>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">02</div>
+      <div class="step-ico"><i class="fas fa-chart-bar"></i></div>
+      <h4>Disenamos tu pagina</h4>
+      <p>Creo una propuesta visual con el diseno, colores y estructura de tu sitio web.</p>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">03</div>
+      <div class="step-ico"><i class="fas fa-laptop-code"></i></div>
+      <h4>Desarrollo la pagina</h4>
+      <p>Construyo tu sitio web con codigo limpio, optimizado y adaptado a todos los dispositivos.</p>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">04</div>
+      <div class="step-ico"><i class="fas fa-search"></i></div>
+      <h4>Revisamos los detalles</h4>
+      <p>Juntos revisamos el sitio y hacemos los ajustes necesarios hasta que quede perfecto.</p>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">05</div>
+      <div class="step-ico"><i class="fas fa-rocket"></i></div>
+      <h4>Publicamos tu pagina</h4>
+      <p>Subo tu sitio a internet y te entrego todo listo para que empieces a recibir clientes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTAFOLIO -->
+<section id="portafolio">
+  <h2 class="section-title fade-in">Proyectos que inspiran</h2>
+  <p class="section-sub fade-in">Ejemplos de paginas web que he creado para diferentes tipos de negocios.</p>
+  <div class="portfolio-filters fade-in">
+    <button class="filter-btn active" onclick="filterPortfolio('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="filterPortfolio('restaurantes',this)">Restaurantes</button>
+    <button class="filter-btn" onclick="filterPortfolio('tiendas',this)">Tiendas</button>
+    <button class="filter-btn" onclick="filterPortfolio('servicios',this)">Servicios</button>
+    <button class="filter-btn" onclick="filterPortfolio('landing',this)">Landing</button>
+  </div>
+  <div class="portfolio-grid" id="portfolioGrid">
+    <div class="portfolio-item" data-cat="servicios">
+      <div class="portfolio-img">
+        <img src="img/barber.jpeg" alt="Pagina web para barberia Style Cut" loading="lazy">
+        <div class="portfolio-overlay"><i class="fas fa-external-link-alt"></i></div>
+      </div>
+      <div class="portfolio-info">
+        <h4>Style Cut</h4>
+        <span class="portfolio-tag">Barberia</span>
+        <p>Landing page atractiva para barberia con citas online, galeria de cortes y contacto directo.</p>
+      </div>
+    </div>
+    <div class="portfolio-item" data-cat="restaurantes">
+      <div class="portfolio-img">
+        <img src="img/Rincon.jpeg" alt="Pagina web para restaurante El Rincon Chapin" loading="lazy">
+        <div class="portfolio-overlay"><i class="fas fa-external-link-alt"></i></div>
+      </div>
+      <div class="portfolio-info">
+        <h4>El Rincon Chapín</h4>
+        <span class="portfolio-tag">Restaurante</span>
+        <p>Sitio web con menu digital, reservas online y galeria de platillos.</p>
+      </div>
+    </div>
+    <div class="portfolio-item" data-cat="tiendas">
+      <div class="portfolio-img">
+        <img src="img/Moda.jpeg" alt="Pagina web para tienda online Moda GT" loading="lazy">
+        <div class="portfolio-overlay"><i class="fas fa-external-link-alt"></i></div>
+      </div>
+      <div class="portfolio-info">
+        <h4>Moda GT</h4>
+        <span class="portfolio-tag">Tienda</span>
+        <p>Catalogo de productos con WhatsApp integrado para pedidos directos.</p>
+      </div>
+    </div>
+    <div class="portfolio-item" data-cat="landing">
+      <div class="portfolio-img">
+        <img src="img/bienes raices.jpeg" alt="Landing page para inmobiliaria Bienes Raices Pro" loading="lazy">
+        <div class="portfolio-overlay"><i class="fas fa-external-link-alt"></i></div>
+      </div>
+      <div class="portfolio-info">
+        <h4>Bienes Raices Pro</h4>
+        <span class="portfolio-tag">Landing</span>
+        <p>Landing page para captacion de leads en sector inmobiliario.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contact-wrap fade-in">
+    <div class="contact-left">
+      <h2>Listo para tu pagina web?</h2>
+      <p>Cuentame que necesitas y te asesoro sin compromiso. Respondemos en menos de 24 horas.</p>
+      <div class="contact-info">
+        <div class="contact-info-item">
+          <div style="width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#22c55e;font-size:14px;min-width:36px"><i class="fab fa-whatsapp"></i></div>
+          <span>WhatsApp Directo</span>
+        </div>
+        <div class="contact-info-item">
+          <div style="width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#22c55e;font-size:14px;min-width:36px"><i class="fas fa-envelope"></i></div>
+          <span>info@chapincode.com</span>
+        </div>
+      </div>
+      <a href="https://wa.me/50236726014?text=Hola,%20quiero%20cotizar%20mi%20pagina%20web" target="_blank" class="btn-whatsapp">
+        <i class="fab fa-whatsapp"></i> Chatear por WhatsApp
+      </a>
+    </div>
+    <div class="contact-right">
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" placeholder="Tu nombre" id="nombre">
+      </div>
+      <div class="form-group">
+        <label>Correo electronico</label>
+        <input type="email" placeholder="tu@email.com" id="email">
+      </div>
+      <div class="form-group">
+        <label>Telefono</label>
+        <input type="tel" placeholder="502 0000 0000" id="telefono">
+      </div>
+      <div class="form-group">
+        <label>Tipo de proyecto</label>
+        <select id="proyecto">
+          <option value="">Selecciona una opcion</option>
+          <option>Pagina Web Basica</option>
+          <option>Landing Page de Ventas</option>
+          <option>Sitio Web Empresarial</option>
+          <option>Rediseno Web</option>
+          <option>Mantenimiento Web</option>
+          <option>Consultoria Digital</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mensaje</label>
+        <textarea id="mensaje" placeholder="Cuentame sobre tu negocio y que tipo de pagina necesitas..." oninput="updateCount(this)"></textarea>
+        <div class="char-count"><span id="charCount">0</span>/500 caracteres</div>
+      </div>
+      <button class="btn-submit" onclick="enviarFormulario()">Enviar mensaje</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#inicio" class="logo">
+        <div class="logo-icon">CC</div>
+        <span class="logo-name">Chapin Code</span>
+      </a>
+      <p>Creamos paginas web profesionales, modernas y rapidas para que tu negocio tenga presencia en internet y venda mas.</p>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>SERVICIOS</h4>
+      <ul>
+        <li><a href="#servicios">Pagina Web Basica</a></li>
+        <li><a href="#servicios">Landing Page</a></li>
+        <li><a href="#servicios">Sitio Empresarial</a></li>
+        <li><a href="#servicios">Rediseno Web</a></li>
+        <li><a href="#servicios">Mantenimiento</a></li>
+        <li><a href="#servicios">Consultoria Digital</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>CONTACTO</h4>
+      <ul>
+        <li><span><i class="fab fa-whatsapp"></i> WhatsApp</span></li>
+        <li><span><i class="fas fa-clock"></i> Lunes a Viernes, 8am - 6pm</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Chapin Code. Todos los derechos reservados.</p>
+    <div class="footer-bottom-links">
+      <a href="#">Terminos</a>
+      <a href="#">Privacidad</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/50236726014?text=Hola,%20necesito%20informacion" target="_blank" class="wa-float">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<script>
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Hamburger
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  });
+  function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+  // Fade in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Portfolio filter
+  function filterPortfolio(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.portfolio-item').forEach(item => {
+      const show = cat === 'todos' || item.dataset.cat === cat;
+      item.style.display = show ? 'block' : 'none';
+    });
+  }
+
+  // Char count
+  function updateCount(el) {
+    document.getElementById('charCount').textContent = el.value.length;
+  }
+
+  // Form submit
+  function enviarFormulario() {
+    const nombre = document.getElementById('nombre').value;
+    const email = document.getElementById('email').value;
+    const telefono = document.getElementById('telefono').value;
+    const proyecto = document.getElementById('proyecto').value;
+    const mensaje = document.getElementById('mensaje').value;
+    if (!nombre || !email || !proyecto) {
+      alert('Por favor completa los campos obligatorios: nombre, correo y tipo de proyecto.');
+      return;
+    }
+    const text = encodeURIComponent(`Hola! Mi nombre es ${nombre}.\nCorreo: ${email}\nTelefono: ${telefono}\nProyecto: ${proyecto}\nMensaje: ${mensaje}`);
+    window.open(`https://wa.me/50236726014?text=${text}`, '_blank');
+  }
+</script>
+</body>
+</html>
